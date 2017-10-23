@@ -16,6 +16,19 @@ app.use(express.static(publicPath)) //config static express middleware
 io.on('connection', (socket) => {
     console.log('New user connected')
 
+    // socket.emit from Admin text Welcome to the chat app
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome to the chat app'
+    })
+
+    // socket.broadcast.emit from Admin text New usr joined
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createAt: new Date().getTime()
+    })
+
     socket.emit('newEmail', {
         from: 'tianhao@gmail.com',
         text: 'See you then',
@@ -34,11 +47,17 @@ io.on('connection', (socket) => {
     })
     socket.on('createMessage', (message) => {
         console.log('createMessage', message)
-        io.emit('newMessage', { // send the message to all users
-            from: message.from,
-            text: message.text,
-            createAt: new Date().getTime()
-        })
+        // io.emit('newMessage', { // send the message to all users including self
+        //     from: message.from,
+        //     text: message.text,
+        //     createAt: new Date().getTime()
+        // })
+
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createAt: new Date().getTime()
+        // }) // send the message to everybody else
     })
 
     socket.on('disconnect', () => {
