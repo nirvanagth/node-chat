@@ -1,16 +1,13 @@
 var socket = io()
 
-socket.on('connect', function () {
+socket.on('connect', function () { //client side js should use function in case browser does not support ES6
     console.log('Connected to server')
 
+
     // socket.emit('createMessage', {
-    //     from: 'Andrew',
-    //     text: 'Yup, that works for me.'
+    //     from: 'Tianhao',
+    //     text: 'shit happens'
     // })
-    socket.emit('createMessage', {
-        from: 'Tianhao',
-        text: 'shit happens'
-    })
     socket.emit('createEmail', {
         to: 'jen@example.com',
         text: 'Hey. This is Tianhao'
