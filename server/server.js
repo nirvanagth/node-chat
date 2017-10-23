@@ -10,14 +10,37 @@ const port = process.env.PORT || 3000
 var app = express()
 var server = http.createServer((app))
 var io = socketIO(server)
+
+app.use(express.static(publicPath)) //config static express middleware
+
 io.on('connection', (socket) => {
     console.log('New user connected')
+
+    socket.emit('newEmail', {
+        from: 'tianhao@gmail.com',
+        text: 'See you then',
+        createAt: '12343434'
+    })
+
+    socket.emit('newMessage', {
+        from: 'tianhao',
+        text: 'nope',
+        createAt: '647326'
+    })
+
+
+    socket.on('createEmail', (newEmail) => {
+        console.log('createEmail', newEmail)
+    })
+    socket.on('createMessage', (message) => {
+        console.log('createMessage', message)
+    })
+
     socket.on('disconnect', () => {
         console.log('User disconnected')
     })
 })
 
-app.use(express.static(publicPath)) //config static express middleware
 
 
 server.listen(port, () => {
